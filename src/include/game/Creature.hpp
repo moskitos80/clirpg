@@ -4,6 +4,8 @@
 #include <string_view>
 #include <string>
 
+#include "game/HeroFate.hpp"
+
 namespace game
 {
     /*
@@ -38,32 +40,40 @@ namespace game
     class Creature
     {
     public:
-        Creature();
+        Creature(
+            const HeroFate& fate,
+            std::string_view name,
+            char symbol,
+            int level = 1,
+            double heroFactor = 1,
+            int gold = 0
+        );
         virtual ~Creature() = default;
 
         virtual std::string_view Name() const;
-        virtual void SetName(std::string_view);
-
         virtual char Symbol() const;
-        virtual void SetSymbol(char);
 
-        virtual void Heal(int) const;
         virtual int HitPoints() const;
+        virtual int MaxHitPoints() const;
         virtual bool IsDead() const;
         virtual int Damage() const;
 
+        virtual void Heal(int);
         virtual void SetDamage(int);
 
         virtual int Experience() const;
-        virtual void SetExperience(int) const;
+        virtual void SetExperience(int);
 
         virtual int Level() const;
-        virtual void UpLevel(int);
+        virtual int LevelUp();
 
         virtual int Gold() const;
         virtual void SetGold(int);
+        virtual void AddGold(int);
 
     private:
+        const HeroFate& mFate;
+
         std::string mName{};
         char mSymbol{ '@' };
 
@@ -74,6 +84,7 @@ namespace game
         int mExperience{};
         int mExperienceGoal{};
 
+        double mHeroFactor{};
         int mGold{};
     };
 }

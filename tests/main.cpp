@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-TEST(HelloTest, BasicAssertions)
+TEST(CliRpgGame, Main)
 {
-    EXPECT_EQ(7 * 6, 42);
+   /* EMPTY YET... */
 }

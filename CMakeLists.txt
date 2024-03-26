@@ -36,6 +36,11 @@ enable_testing()
 
 add_executable(CliRpgTest 
     tests/main.cpp
+
+    src/game/HeroFate.cpp
+    tests/game/HeroFate.cpp
+
+    src/game/Creature.cpp
     tests/game/Creature.cpp
 )
 target_link_libraries(CliRpgTest GTest::gtest_main)
