@@ -20,25 +20,25 @@ const auto Level_6{ 6 };
 
 TEST(Creature, Name)
 {
-    game::Creature cr{ theFate, "Banshi", 'o', 1, GhostHeroFactor, 20 };
-    EXPECT_TRUE(cr.Name() == "Banshi");
+    game::Creature cr{ theFate, "Namer", 'o', Level_1, GhostHeroFactor, 20 };
+    EXPECT_TRUE(cr.Name() == "Namer");
 }
 
 TEST(Creature, Symbol)
 {
-    game::Creature cr{ theFate, "Banshi", 'o', 1, GhostHeroFactor, 20 };
+    game::Creature cr{ theFate, "Symboler", 'o', Level_1, GhostHeroFactor, 20 };
     EXPECT_TRUE(cr.Symbol() == 'o');
 }
 
 TEST(Creature, Level)
 {
-    game::Creature cr{ theFate, "Banshi", 'o', 1, GhostHeroFactor, 20 };
-    EXPECT_TRUE(cr.Level() == 1);
+    game::Creature cr{ theFate, "Leveler", 'o', Level_1, GhostHeroFactor, 20 };
+    EXPECT_TRUE(cr.Level() == Level_1);
 }
 
 TEST(Creature, Gold)
 {
-    game::Creature cr{ theFate, "Banshi", 'o', 1, GhostHeroFactor, 20 };
+    game::Creature cr{ theFate, "Goldberg", 'o', Level_1, GhostHeroFactor, 20 };
     EXPECT_TRUE(cr.Gold() == 20);
     cr.SetGold(30);
     EXPECT_TRUE(cr.Gold() == 30);
@@ -46,17 +46,112 @@ TEST(Creature, Gold)
     EXPECT_TRUE(cr.Gold() == 35);
 }
 
-TEST(Creature, HitPoints)
+TEST(Creature, HitPoints_MaxHitPoints)
 {
-    game::Creature cr{ theFate, "Gooo", 'o', 1, GhostHeroFactor, 20 };
-    EXPECT_TRUE(cr.HitPoints() == 7);
+    {
+        game::Creature cr{ theFate, "HitPointer", 'o', Level_1, GhostHeroFactor, 20 };
+        EXPECT_EQ(cr.HitPoints(), 7);
+        EXPECT_EQ(cr.MaxHitPoints(), 7);
+    }
 
+    {
+        game::Creature cr{ theFate, "HitPointer", 'o', Level_1, WarriorHeroFactor, 20 };
+        EXPECT_EQ(cr.HitPoints(), 9);
+        EXPECT_EQ(cr.MaxHitPoints(), 9);
+    }
+
+    {
+        game::Creature cr{ theFate, "HitPointer", 'o', Level_1, TankHeroFactor, 20 };
+        EXPECT_EQ(cr.HitPoints(), 14);
+        EXPECT_EQ(cr.MaxHitPoints(), 14);
+    }
+}
+
+TEST(Creature, Experience_ExperienceNeed)
+{
+    {
+        game::Creature cr{ theFate, "HitPointer", 'o', Level_1, GhostHeroFactor, 20 };
+        EXPECT_EQ(cr.Experience(), 0);
+        EXPECT_EQ(cr.ExperienceNeed(), 16);
+    }
+
+    {
+        game::Creature cr{ theFate, "HitPointer", 'o', Level_4, WarriorHeroFactor, 20 };
+        EXPECT_EQ(cr.Experience(), 0);
+        EXPECT_EQ(cr.ExperienceNeed(), 42);
+    }
+
+    {
+        game::Creature cr{ theFate, "HitPointer", 'o', Level_6, TankHeroFactor, 20 };
+        EXPECT_EQ(cr.Experience(), 0);
+        EXPECT_EQ(cr.ExperienceNeed(), 56);
+    }
+}
+
+TEST(Creature, Damage)
+{
+    {
+        game::Creature cr{ theFate, "HitPointer", 'o', Level_6, GhostHeroFactor, 20 };
+        EXPECT_EQ(cr.Damage(), 2);
+    }
+
+    {
+        game::Creature cr{ theFate, "HitPointer", 'o', Level_6, WarriorHeroFactor, 20 };
+        EXPECT_EQ(cr.Damage(), 3);
+    }
+
+    {
+        game::Creature cr{ theFate, "HitPointer", 'o', Level_6, TankHeroFactor, 20 };
+        EXPECT_EQ(cr.Damage(), 4);
+    }
+}
+
+TEST(Creature, SetDamage)
+{
+    {
+        game::Creature cr{ theFate, "HitPointer", 'o', Level_1, GhostHeroFactor, 20 };
+        cr.SetDamage(5);
+        EXPECT_EQ(cr.HitPoints(), 2);
+
+        cr.SetDamage(10);
+        EXPECT_EQ(cr.HitPoints(), 0);
+    }
+}
+
+TEST(Creature, IsDead)
+{
+    game::Creature cr{ theFate, "HitPointer", 'o', Level_1, GhostHeroFactor, 20 };
     cr.SetDamage(5);
-    EXPECT_TRUE(cr.HitPoints() == 2);
     EXPECT_FALSE(cr.IsDead());
 
-    cr.SetDamage(5);
-    EXPECT_TRUE(cr.HitPoints() == 0);
+    cr.SetDamage(10);
     EXPECT_TRUE(cr.IsDead());
 }
 
+TEST(Creature, Experience_LevelUp)
+{
+    game::Creature cr{ theFate, "HitPointer", 'o', Level_1, GhostHeroFactor, 20 };
+
+    EXPECT_EQ(cr.Experience(), 0);
+    EXPECT_EQ(cr.ExperienceNeed(), 16);
+
+    cr.SetExperience(10);
+    EXPECT_EQ(cr.Experience(), 10);
+    EXPECT_EQ(cr.ExperienceNeed(), 16);
+
+    EXPECT_EQ(cr.Level(), 1);
+}
+
+TEST(Creature, Experience_LevelUp_Overflow)
+{
+    game::Creature cr{ theFate, "HitPointer", 'o', Level_1, GhostHeroFactor, 20 };
+
+    EXPECT_EQ(cr.Experience(), 0);
+    EXPECT_EQ(cr.ExperienceNeed(), 16);
+
+    cr.SetExperience(20);
+    EXPECT_EQ(cr.Experience(), 4);
+    EXPECT_EQ(cr.ExperienceNeed(), 25);
+
+    EXPECT_EQ(cr.Level(), 2);
+}

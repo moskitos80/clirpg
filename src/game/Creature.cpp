@@ -1,3 +1,5 @@
+#include <cassert>
+
 #include "game/Creature.hpp"
 
 namespace game
@@ -18,6 +20,7 @@ namespace game
         , mGold{ gold }
     {
         mMaxHitPoints = mFate.baseMaxHitPoints(mLevel, mHeroFactor);
+        mExperienceGoal = mFate.experienceForLevelUp(mLevel);
         mHitPoints = mMaxHitPoints;
     }
 
@@ -69,8 +72,15 @@ namespace game
         return mExperience;
     }
 
+    int Creature::ExperienceNeed() const
+    {
+        return mExperienceGoal;
+    }
+
     void Creature::SetExperience(int e)
     {
+        assert(mExperienceGoal > 0);
+
         mExperience += e;
         while (mExperience >= mExperienceGoal) {
             mExperience %= mExperienceGoal;

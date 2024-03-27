@@ -62,6 +62,7 @@ namespace game
         virtual void SetDamage(int);
 
         virtual int Experience() const;
+        virtual int ExperienceNeed() const;
         virtual void SetExperience(int);
 
         virtual int Level() const;
