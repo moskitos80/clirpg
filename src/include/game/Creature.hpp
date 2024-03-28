@@ -4,6 +4,8 @@
 #include <string_view>
 #include <string>
 
+#include "game/Gainer.hpp"
+#include "game/Patient.hpp"
 #include "game/HeroFate.hpp"
 
 namespace game
@@ -37,7 +39,9 @@ namespace game
         * Количество опыта требуемого для повышения до
             следующего уровня вычисляется согласно базовой прогрессии
     */
-    class Creature
+    class Creature :
+        public Gainer,
+        public Patient
     {
     public:
         Creature(
@@ -60,6 +64,7 @@ namespace game
 
         virtual void Heal(int);
         virtual void SetDamage(int);
+        virtual void AddDamage(int);
 
         virtual int Experience() const;
         virtual int ExperienceNeed() const;
@@ -84,6 +89,8 @@ namespace game
         int mLevel{};
         int mExperience{};
         int mExperienceGoal{};
+
+        int mExtraDamage{};
 
         double mHeroFactor{};
         int mGold{};

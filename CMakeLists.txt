@@ -42,6 +42,12 @@ add_executable(CliRpgTest
 
     src/game/Creature.cpp
     tests/game/Creature.cpp
+
+    src/game/Player.cpp
+    tests/game/Player.cpp
+
+    src/game/Potion.cpp
+    tests/game/Potion.cpp
 )
 target_link_libraries(CliRpgTest GTest::gtest_main)
 target_include_directories(CliRpgTest PRIVATE src/include)

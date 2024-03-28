@@ -51,7 +51,7 @@ namespace game
 
     int Creature::Damage() const
     {
-        return mFate.baseMaxDamage(mLevel, mHeroFactor);
+        return mFate.baseMaxDamage(mLevel, mHeroFactor) + mExtraDamage;
     }
 
     void Creature::Heal(int hp)
@@ -65,6 +65,11 @@ namespace game
     {
         mHitPoints -= hp;
         mHitPoints = mHitPoints < 0 ? 0 : mHitPoints;
+    }
+
+    void Creature::AddDamage(int d)
+    {
+        mExtraDamage += d;
     }
 
     int Creature::Experience() const
