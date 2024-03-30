@@ -16,10 +16,11 @@ add_compile_options(
 )
 
 add_executable(CliRpgGame 
+    src/game/Engine.cpp
     src/main.cpp
 )
 
-target_include_directories(CliRpgGame PRIVATE src/game)
+target_include_directories(CliRpgGame PRIVATE src/include)
 
 #######
 
