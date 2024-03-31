@@ -5,6 +5,11 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED On)
 set(CMAKE_CXX_EXTENSIONS Off)
 
+set(INC_DIRS include)
+set(SRC_FILES src/main.cpp)
+set(TEST_FILES tests/main.cpp)
+list(APPEND ${TEST_FILES} ${SRC_FILES})
+
 add_compile_options(
     -g3
     -Og
@@ -15,12 +20,8 @@ add_compile_options(
     -Wsign-conversion
 )
 
-add_executable(CliRpgGame 
-    src/game/Engine.cpp
-    src/main.cpp
-)
-
-target_include_directories(CliRpgGame PRIVATE src/include)
+add_executable(CliRpgGame ${SRC_FILES})
+target_include_directories(CliRpgGame PRIVATE ${INC_DIRS})
 
 #######
 
@@ -35,23 +36,10 @@ FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 
-add_executable(CliRpgTest 
-    tests/main.cpp
+add_executable(CliRpgTest ${TEST_FILES})
+target_include_directories(CliRpgTest PRIVATE ${INC_DIRS})
 
-    src/game/HeroFate.cpp
-    tests/game/HeroFate.cpp
-
-    src/game/Creature.cpp
-    tests/game/Creature.cpp
-
-    src/game/Player.cpp
-    tests/game/Player.cpp
-
-    src/game/Potion.cpp
-    tests/game/Potion.cpp
-)
 target_link_libraries(CliRpgTest GTest::gtest_main)
-target_include_directories(CliRpgTest PRIVATE src/include)
 
 include(GoogleTest)
 gtest_discover_tests(CliRpgTest)
