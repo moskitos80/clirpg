@@ -3,11 +3,12 @@
         {
             "name": "Linux",
             "includePath": [
-                "${workspaceFolder}/**",
-                "${workspaceFolder}/build/_deps/googletest-src/googletest/include"
+                "${workspaceFolder}/**"
             ],
             "defines": [],
-            "cStandard": "c17"
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c17",
+            "intelliSenseMode": "linux-clang-x64"
         }
     ],
     "version": 4

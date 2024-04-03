@@ -4,8 +4,9 @@ project(CliRpg VERSION 0.1.0 LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED On)
 set(CMAKE_CXX_EXTENSIONS Off)
+set(CMAKE_EXPORT_COMPILE_COMMANDS On)
 
-set(INC_DIRS include)
+set(INC_DIRS include lib/btree/include)
 set(SRC_FILES src/main.cpp)
 set(TEST_FILES tests/main.cpp)
 list(APPEND ${TEST_FILES} ${SRC_FILES})
@@ -20,8 +21,11 @@ add_compile_options(
     -Wsign-conversion
 )
 
+add_subdirectory(lib/btree)
+
 add_executable(CliRpgGame ${SRC_FILES})
 target_include_directories(CliRpgGame PRIVATE ${INC_DIRS})
+target_link_libraries(CliRpgGame btree)
 
 #######
 
